@@ -1,5 +1,10 @@
 FROM php:8.0-fpm AS php
 
+WORKDIR /var/www/html
+
+MAINTAINER TyTV <tytv@miichisoft.com>
+LABEL maintainer="tytv@miichisoft.com"
+
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo_mysql
 
