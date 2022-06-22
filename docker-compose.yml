@@ -1,0 +1,41 @@
+version: "3.4"
+services:
+  nginx:
+    build: './nginx/'
+    container_name: tytv_nginx
+    depends_on:
+      - php
+    networks:
+      - docker_finish
+    ports:
+      - "8022:80"
+    volumes:
+      - ./:/var/www/html/
+  php:
+    build:
+      context: './php/'
+      target: php
+    container_name: tytv_php
+    networks:
+      - docker_finish
+    volumes:
+      - ./:/var/www/html/
+      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+  mysql:
+    image: 'mysql:8.0'
+    ports:
+      - "33022:3306"
+    restart: 'always'
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: docker_tytv
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123456
+    container_name: tytv_mysql
+    volumes:
+      - ./:/var/www/html/
+    networks:
+      - docker_finish
+
+networks:
+  docker_finish:
